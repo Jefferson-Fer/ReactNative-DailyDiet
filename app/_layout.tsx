@@ -1,35 +1,49 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+import "react-native-reanimated";
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+import {
+  NunitoSans_400Regular,
+  NunitoSans_700Bold,
+  useFonts,
+} from "@expo-google-fonts/nunito-sans";
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { ThemeProvider } from "styled-components";
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+import theme from "@/constants/theme";
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+  const [fontsLoaded] = useFonts({
+    NunitoSans_400Regular,
+    NunitoSans_700Bold,
   });
 
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
+  if (!fontsLoaded) {
     return null;
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <ThemeProvider theme={theme}>
+      <StatusBar style="auto" translucent />
+
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="DetailsPercent/index"
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen name="Snack/index" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="Snack/[id]/index"
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Snack/[id]/Info/index"
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Snack/[id]/Edit/index"
+          options={{ headerShown: false }}
+        />
         <Stack.Screen name="+not-found" />
       </Stack>
     </ThemeProvider>
